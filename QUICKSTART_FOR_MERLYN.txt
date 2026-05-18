@@ -1,0 +1,205 @@
+================================================================================
+  SOILSENSE: INTEGRATED PROTOTYPE
+  Merlyn's Early Warning + Maryline's 10-m Downscaling Architecture
+================================================================================
+
+FOR MERLYN:
+
+What you need to see:
+- How Maryline's thesis (10-m soil moisture maps) connects to your vision
+- How validation (Table 19 metrics) proves it works
+- How farmers actually receive alerts (SMS + app)
+- All 4 layers working together in real time
+
+================================================================================
+  STEP-BY-STEP: RUN THE PROTOTYPE
+================================================================================
+
+1. UNZIP FILE
+   └─ soilsense.zip → D:\soilsense\
+
+2. OPEN ARCHITECTURE VISUAL FIRST
+   └─ Double-click: ARCHITECTURE_VISUAL.html
+   └─ This explains the 4 layers in plain language
+
+3. START BACKEND SERVER
+   └─ Double-click: RUN_BACKEND.bat
+   └─ Terminal appears. Server runs in background.
+
+4. OPEN DASHBOARD
+   └─ Double-click: OPEN_DASHBOARD.bat
+   └─ Web browser opens showing empty dashboard
+
+5. RUN PIPELINE
+   └─ Click blue "▶ Run Daily Pipeline" button
+   └─ Watch dashboard update as all 4 layers execute
+   └─ Takes ~20 seconds
+
+================================================================================
+  WHAT YOU'LL SEE
+================================================================================
+
+Backend Console (shows execution):
+  [LAYER 1] Data ingested (SMAP, Sentinel-2, CHIRPS, u-blox)
+  [LAYER 2] RF predictions → 10-m maps → alerts triggered
+    L01: 🔴 CRITICAL
+    L02: 🟡 WARNING
+  [LAYER 3] Validation metrics: R=0.93, RMSE=0.0181, etc.
+    Trust Score: 🟢 All pass
+  [LAYER 4] SMS ready, dashboard updated
+
+Frontend Dashboard:
+  - Grid of colored cells (red=dry, yellow=moderate, green=wet)
+  - Alert cards with SMS preview
+  - Table 19 validation metrics (Pearson R, RMSE, MAE, Bias)
+  - Trust Score indicator (green if all pass)
+  - SMS bilingual alert log
+
+================================================================================
+  KEY FILES
+================================================================================
+
+READ FIRST:
+  └─ ARCHITECTURE_VISUAL.html
+     Simple visual explanation (no coding knowledge needed)
+
+THEN READ:
+  └─ SYSTEM_EXPLANATION.md
+     Detailed walkthrough of each layer
+
+FOR TECHNICAL DETAILS:
+  └─ ARCHITECTURE_INTEGRATED.md
+     Full blueprint (merged architecture)
+
+HOW TO RUN:
+  └─ README_PROTOTYPE.md
+     Setup, testing, troubleshooting
+
+HOW TO SHARE:
+  └─ SHARE_WITH_MERLYN.md
+     Different ways to send this to stakeholders
+
+================================================================================
+  THE 4 LAYERS EXPLAINED
+================================================================================
+
+LAYER 1: Data Input
+  What: Fetch SMAP, Sentinel-2, CHIRPS, u-blox daily
+  Why: Multiple data sources improve predictions
+  Output: Raw data ready for processing
+
+LAYER 2: Processing & Modeling
+  What: Random Forest + Kriging downscale 9-km SMAP → 10-m maps
+  Why: 10-m resolution enables field-level irrigation decisions
+  Output: 10-m soil moisture maps + alerts (SM < 0.10 critical, < 0.15 warning)
+
+LAYER 3: Validation & Quality Control
+  What: Compare predictions vs. independent u-blox GNSS-R ground truth
+  Why: Validation metrics (Table 19) build farmer trust
+  Output: Trust Score 🟢 (all metrics pass) = high confidence
+  Metrics:
+    - Pearson R: 0.93 (target ≥0.80) ✓
+    - RMSE: 0.0181 m³/m³ (target ≤0.040) ✓
+    - MAE: 0.0131 m³/m³ (target ≤0.030) ✓
+    - Bias: +0.0021 m³/m³ (target ±0.02) ✓
+
+LAYER 4: Output Channels
+  What: Deliver alerts to farmers (SMS + web + mobile + CSV)
+  Why: Farmers need multiple access methods (no internet in field)
+  Output:
+    - SMS: bilingual, 160 chars, via Twilio/Afrimotech
+    - Web: 10-m map + validation metrics + alert log
+    - Mobile: offline-first Flutter app
+    - CSV: for DALRRD government reports
+
+================================================================================
+  QUESTIONS TO DISCUSS AFTER DEMO
+================================================================================
+
+1. Do the 4 layers match your vision?
+
+2. For YOUR crops (maize/wheat/sorghum):
+   - What SM value is critical? (currently: 0.10)
+   - What SM value is warning? (currently: 0.15)
+
+3. Bilingual SMS:
+   - Does the Tshivenda translation work for farmers?
+   - Any other languages needed?
+
+4. Real deployment:
+   - Would you deploy u-blox at UNIVEN for ground validation?
+   - Which SMS gateway? (Twilio = international, Afrimotech = local SA)
+   - Timeline for full system?
+
+================================================================================
+  FILES TO SHARE WITH STAKEHOLDERS
+================================================================================
+
+Option 1: Send ZIP via email (easiest)
+  └─ soilsense.zip (~230 KB)
+  └─ They extract + run .bat files
+
+Option 2: Upload to Google Drive
+  └─ Share link (no email size limits)
+
+Option 3: Push to GitHub
+  └─ Professional version control
+  └─ GitHub URL for collaboration
+
+================================================================================
+  IF SOMETHING BREAKS
+================================================================================
+
+Backend won't start:
+  └─ Check: Python 3.9+ installed?
+  └─ Run manually: cd D:\soilsense\backend && python app.py
+
+Backend not responding:
+  └─ Check: http://localhost:8000 in browser
+  └─ Close + restart RUN_BACKEND.bat
+
+Dashboard empty after pipeline:
+  └─ Check browser console (F12 → Console)
+  └─ Check backend terminal for errors
+
+================================================================================
+  NEXT STEPS
+================================================================================
+
+After demo, if you like it:
+
+1. Confirm thresholds (SM critical/warning values for your crops)
+2. Test bilingual SMS messaging
+3. Deploy real u-blox receiver at UNIVEN
+4. Integrate real SMAP/Sentinel-2/CHIRPS data feeds
+5. Set up Twilio/Afrimotech SMS account
+6. Pilot with farmers (user feedback on UX)
+
+================================================================================
+  CONTACT
+================================================================================
+
+Questions about prototype?
+  └─ See SYSTEM_EXPLANATION.md (detailed walkthrough)
+  └─ See README_PROTOTYPE.md (troubleshooting)
+  └─ Check browser console (F12)
+  └─ Check backend terminal (error messages)
+
+Want to see the code?
+  └─ backend/app.py (all 4 layers)
+  └─ backend/ml_engine.py (Random Forest logic)
+  └─ backend/validation.py (Table 19 metrics)
+  └─ frontend/index.html + app.js (dashboard)
+
+================================================================================
+
+🌱 SoilSense: Bringing precision agriculture to data-scarce regions.
+
+Ready to test? Run:
+  1. RUN_BACKEND.bat
+  2. OPEN_DASHBOARD.bat
+  3. Click "▶ Run Daily Pipeline"
+
+That's it!
+
+================================================================================

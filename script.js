@@ -4,6 +4,12 @@
 // CONFIGURATION
 // ============================================================================
 
+const CROP_ICONS = {
+    maize: '🌽',
+    wheat: '🌾',
+    sorghum: '🌱',
+};
+
 const CROP_THRESHOLDS = {
     maize: {
         sm_critical: 0.10,
@@ -217,10 +223,11 @@ function initMap() {
         });
 
         const marker = L.marker([cell.lat, cell.lon], { icon }).addTo(map);
+        const cropIcon = CROP_ICONS[cell.crop] || '🌾';
         marker.bindPopup(`
-            <strong>${cell.cell_id}: ${cell.name}</strong><br/>
-            Crop: ${cell.crop}<br/>
-            Status: ${severity.toUpperCase()}<br/>
+            <strong>${cell.cell_id}: ${cell.name.replace(/_/g, ' ')}</strong><br/>
+            <strong>${cropIcon} ${cell.crop.charAt(0).toUpperCase() + cell.crop.slice(1)}</strong><br/>
+            Status: <strong>${severity.toUpperCase()}</strong><br/>
             Alerts: ${result.alerts.length}
         `);
 
@@ -258,6 +265,7 @@ function updateSummary() {
 function selectCell(cell) {
     const data = allCellData[cell.cell_id];
 
+    const cropIcon = CROP_ICONS[cell.crop] || '🌾';
     const cellInfoHtml = `
         <table class="cell-info-table">
             <tr>
@@ -266,7 +274,7 @@ function selectCell(cell) {
             </tr>
             <tr>
                 <td>Location:</td>
-                <td>${cell.name}</td>
+                <td>${cell.name.replace(/_/g, ' ')}</td>
             </tr>
             <tr>
                 <td>Coords:</td>
@@ -274,7 +282,7 @@ function selectCell(cell) {
             </tr>
             <tr>
                 <td>Crop:</td>
-                <td><strong>${cell.crop}</strong></td>
+                <td><strong>${cropIcon} ${cell.crop.charAt(0).toUpperCase() + cell.crop.slice(1)}</strong></td>
             </tr>
             <tr>
                 <td>Status:</td>
@@ -462,7 +470,8 @@ function populateCompareLists() {
         GRID_CELLS.forEach(cell => {
             const option = document.createElement('option');
             option.value = cell.cell_id;
-            option.textContent = `${cell.cell_id} (${cell.name})`;
+            const cropIcon = CROP_ICONS[cell.crop] || '🌾';
+            option.textContent = `${cell.cell_id} (${cell.name.replace(/_/g, ' ')}) ${cropIcon}`;
             select.appendChild(option);
         });
     });
