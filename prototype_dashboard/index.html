@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoilSense — Early Warning System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🌾 SoilSense — Agricultural Early Warning System</h1>
+            <p>Real-time soil moisture and crop stress alerts for Limpopo region</p>
+        </header>
+
+        <!-- Summary Dashboard -->
+        <section class="summary-panel">
+            <div class="summary-stat">
+                <div class="stat-value" id="statTotal">10</div>
+                <div class="stat-label">Total Cells</div>
+            </div>
+            <div class="summary-stat critical">
+                <div class="stat-value" id="statCritical">0</div>
+                <div class="stat-label">Critical 🔴</div>
+            </div>
+            <div class="summary-stat warning">
+                <div class="stat-value" id="statWarning">0</div>
+                <div class="stat-label">Warning 🟡</div>
+            </div>
+            <div class="summary-stat caution">
+                <div class="stat-value" id="statCaution">0</div>
+                <div class="stat-label">Caution 🟠</div>
+            </div>
+            <div class="summary-stat ok">
+                <div class="stat-value" id="statOk">10</div>
+                <div class="stat-label">Safe 🟢</div>
+            </div>
+            <div class="summary-stat">
+                <div class="stat-value" id="statAlerts">0</div>
+                <div class="stat-label">Total Alerts</div>
+            </div>
+        </section>
+
+        <!-- Controls -->
+        <section class="controls-panel">
+            <div class="control-group">
+                <label>Filter by Severity:</label>
+                <div class="button-group">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="critical">Critical</button>
+                    <button class="filter-btn" data-filter="warning">Warning</button>
+                    <button class="filter-btn" data-filter="ok">Safe</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Crop Type:</label>
+                <select id="cropSelect">
+                    <option value="maize">Maize</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="sorghum">Sorghum</option>
+                    <option value="all">All Crops</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <button id="exportBtn" class="export-btn">📥 Export Alerts to CSV</button>
+            </div>
+        </section>
+
+        <!-- Main content -->
+        <div class="main">
+            <!-- Left: Map -->
+            <section class="map-section">
+                <h2>Alert Map</h2>
+                <div id="map"></div>
+            </section>
+
+            <!-- Right: Details -->
+            <section class="details-section">
+                <!-- Cell details -->
+                <div class="panel cell-details">
+                    <h3>Cell Details</h3>
+                    <div id="cellInfo">
+                        <p class="hint">Click a cell on the map to view details.</p>
+                    </div>
+                </div>
+
+                <!-- Compare cells -->
+                <div class="panel compare-cells">
+                    <h3>Compare Two Cells</h3>
+                    <div class="compare-controls">
+                        <select id="compareCell1" class="compare-select">
+                            <option value="">Select cell...</option>
+                        </select>
+                        <select id="compareCell2" class="compare-select">
+                            <option value="">Select cell...</option>
+                        </select>
+                        <button id="compareBtn" class="compare-button">Compare</button>
+                    </div>
+                </div>
+
+                <!-- Time series chart -->
+                <div class="panel time-series">
+                    <h3>Soil Moisture & Rainfall Trend</h3>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="timeseriesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Alert log -->
+                <div class="panel alert-log">
+                    <h3>Recent Alerts</h3>
+                    <div id="alertLog"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

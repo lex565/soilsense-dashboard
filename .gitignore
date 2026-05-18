@@ -1,0 +1,23 @@
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Dependencies (if we add backend later)
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.local
+
+# Build artifacts
+dist/
+build/
+*.zip
